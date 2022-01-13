@@ -21,7 +21,7 @@ const Home = () => {
     ) 
 
     return (
-        <Container maxW='container.xl' centerContent> 
+        <Container maxW='container.xl' centerContent mt={3}>
             {error && (  <Alert status='error' mt={10} borderRadius={10}>
                             <AlertIcon />
                             {error}
@@ -30,7 +30,8 @@ const Home = () => {
             }
             <Wrap>
                 {products && products.map(p=> 
-                <ProductCard key={p._id} product={p}/>)}    
+                    <ProductCard key={p._id} product={p}/>)
+                }    
             </Wrap>
         </Container>
     )

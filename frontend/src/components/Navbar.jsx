@@ -1,15 +1,18 @@
+import {Link as RouteLink} from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 import { Box, Flex, HStack, Link, IconButton, Stack,
-  useDisclosure, useColorModeValue,
+  useDisclosure, useColorModeValue, Avatar, Text, Center,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
-import {Link as RouteLink} from 'react-router-dom'
-
 const Navbar = () => {
+  const userLogin = useSelector(state => state.userLogin);
+  const {userInfo} = userLogin;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
-    <>
+  return (<>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
@@ -29,10 +32,17 @@ const Navbar = () => {
                 >
                         Cart
                 </Link>
-                <Link as={RouteLink} to='/sign-up' px={2} py={1} rounded={'md'}
-                    _hover={{textDecoration: 'none', bg:'gray.300'}}
+                <Link as={RouteLink} to={`${userInfo ? '/profile' : '/login'}`}
+                    px={2} py={1} rounded={'md'}
+                    _hover={{textDecoration: 'none', bg:'gray.300'}} 
                 >
-                    Sign Up
+                    {userInfo
+                          ? (<Center>
+                              <Avatar name={userInfo.name} bg='teal.500' size={'sm'}/>
+                              <Text pl={2}>{userInfo.name}</Text>
+                            </Center>) 
+                          : 'Login'
+                    }
                 </Link>
             </HStack>
           </HStack>
@@ -43,13 +53,16 @@ const Navbar = () => {
             <Stack as={'nav'} spacing={4}>
                 <Link as={RouteLink} to='/cart' px={2} py={1} rounded={'md'} href={'#'}
                     _hover={{textDecoration: 'none', bg:'gray.300'}}
+                    onClick={isOpen && onClose }
                 >
                     Cart
                  </Link>
-                <Link as={RouteLink} to='/sign-up' px={2} py={1} rounded={'md'} href={'#'}
+                <Link as={RouteLink} to={`${userInfo ? '/profile' : '/login'}`} 
+                    px={2} py={1} rounded={'md'} href={'#'}
                     _hover={{textDecoration: 'none', bg:'gray.300'}}
+                    onClick={isOpen && onClose }
                 >
-                        Sign Up
+                        {userInfo ? 'My Account' : 'Login'}
                 </Link>
             </Stack>
           </Box>

@@ -1,23 +1,36 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { createSearchParams, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchProductDetails } from "../actions/productActions";
 
 import { StarIcon, WarningIcon } from "@chakra-ui/icons";
 import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Image, 
+        Select, 
         SimpleGrid, Spinner, Stack, StackDivider, Text } from "@chakra-ui/react"
 
 const Product = () => {
-    const params = useParams();
-    const dispatch = useDispatch()
+    const {id} = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [quantity, setQuantity] = useState(1);
 
     const { loading, product, error} =  useSelector(state => state.productDetails)
 
     useEffect(()=> {
-        dispatch(fetchProductDetails(params.id));
-    }, [dispatch, params.id])
+        dispatch(fetchProductDetails(id));
+    }, [dispatch, id])
 
+    const addToCartHandler = (e) => {
+        navigate({
+            pathname: '/cart',
+            search: `?${createSearchParams({
+                productId: id,
+                quantity: quantity
+            })}`
+        });            
+    }
 
     if(loading) return (
         <Box display={'flex'} justifyContent={'center'} pt={'12'}>
@@ -80,7 +93,19 @@ const Product = () => {
                                     </Box>
                             </Box>
                         </Stack>
-                        <Button rounded={'none'} w={'full'} mt={8} size={'lg'}
+                        {
+                            product.countInStock > 0
+                            && (<Select placeholder="Select Quantity" 
+                                    value={quantity} size={'lg'}
+                                    onChange={(e) => setQuantity(e.target.value)}
+                                >
+                                    {[...Array(product.countInStock).keys()].map(qty=>
+                                        (<option key={qty+1}>{qty+1}</option>)    
+                                    )}
+                                </Select>)
+                        }
+                        <Button onClick={addToCartHandler}
+                            rounded={'none'} w={'full'} mt={8} size={'lg'}
                             py={'7'} bg={'gray.900'}
                             color={'white'} textTransform={'uppercase'}
                             _hover={{ transform: 'translateY(2px)', boxShadow: 'lg',}}
