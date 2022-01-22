@@ -60,40 +60,43 @@ const OrderDetails = () => {
         <Container maxW={'container.md'} mt={5}>
             {error 
                 ? <Alert status='error'>{error}</Alert>
-                : (<Box borderWidth={'1px'} padding={3} borderColor={'black'} borderRadius={10}>
+                : (<Box borderWidth={'1px'} padding={3} borderRadius={10} boxShadow='lg'>
                     <Heading size={'sm'} my={3}>ORDER DETAILS</Heading>
                     <Stack spacing={2} divider={<Divider borderColor={'grey'}/>} mb={5}>
-                        <Text>Order Id: {order._id}</Text>
-                        <Box>
-                            <Text>Name: {order.user.name}</Text>
-                            <Text>Email: {order.user.email}</Text>
+                        <Box backgroundColor='#edf2f7'>
+                            <Box margin={5}>
+                                <Text fontWeight='bold'>Order Id: {order._id}</Text>
+                                <Text>Name: {order.user.name}</Text>
+                                <Text>Email: {order.user.email}</Text>
+                            </Box>
                         </Box>
                         <Text>{order.isDelivered
                                 ? <><CheckCircleIcon mx={2}/>Item Delivered</>
                                 : <><TimeIcon mx={2}/>Not yet Delivered</>
                             }
                         </Text>
-                        <Text>Address: {order.shippingAddress.address}, {order.shippingAddress.city},
-                            {order.shippingAddress.state} - {order.shippingAddress.pincode}
-                        </Text>
-                        <Text> Total Price: ₹{order.totalPrice}</Text>
-                        <Text> Payment Method: {(order.paymentMethod).toUpperCase()}</Text>
-                    </Stack>
-                    <Divider borderColor={'black'}/>
-                    <Stack width={'2xl'} mt={5}>
-                        <Heading size={'sm'}>Order Items</Heading>
-                        {order.orderItems.map(item => (
-                                <Flex key={item.product} flexDirection={{base:'column', sm:'column', lg:'row'}}
-                                    justifyContent={'space-between'}
-                                >
-                                    <Box size={'xs'} minW={{base:'100px', sm:'xs', md:'md'}}>
-                                        {item.name} <Badge>x{item.quantity}</Badge>
-                                    </Box>
-                                    <Box fontWeight={'bold'}>
-                                        ₹ {(parseFloat(item.price)*parseFloat(item.quantity)).toFixed(2)}
-                                    </Box>
-                                </Flex>
-                            ))}
+                        <Stack width={'2xl'} mt={5}>
+                            <Heading size={'sm'}>Order Items</Heading>
+                            {order.orderItems.map(item => (
+                                    <Flex key={item.product} flexDirection={{base:'column', sm:'column', lg:'row'}}
+                                        justifyContent={'space-between'}
+                                    >
+                                        <Box size={'xs'} minW={{base:'100px', sm:'xs', md:'md'}}>
+                                            {item.name} <Badge>x{item.quantity}</Badge>
+                                        </Box>
+                                        <Box fontWeight={'bold'}>
+                                            ₹ {(parseFloat(item.price)*parseFloat(item.quantity)).toFixed(2)}
+                                        </Box>
+                                    </Flex>
+                                ))}
+                        </Stack>
+                        <Box>
+                            <Text>Address: {order.shippingAddress.address}, {order.shippingAddress.city},
+                                {order.shippingAddress.state} - {order.shippingAddress.pincode}
+                            </Text>
+                            <Text> Total Price: ₹{order.totalPrice}</Text>
+                            <Text> Payment Method: {(order.paymentMethod).toUpperCase()}</Text>
+                        </Box>
                     </Stack>
             </Box>
             )}

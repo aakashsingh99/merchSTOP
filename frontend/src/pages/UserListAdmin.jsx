@@ -1,18 +1,50 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react';
-import { getAllUsers } from '../actions/userActions';
+import { useEffect, useState } from 'react';
+import { useNavigate} from 'react-router-dom'
+import { deleteUser, getAllUsers } from '../actions/userActions';
 
-import { Alert, Center, Container,  Spinner, Table, TableCaption, Tbody, Td, Th, Thead, Tr} from '@chakra-ui/react'
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
+import { Alert, Center, Container,  Spinner, Table, TableCaption, Tbody, Td, Th, Thead, toast, Tr, useToast} from '@chakra-ui/react'
+import { CheckIcon, CloseIcon, DeleteIcon, SettingsIcon } from '@chakra-ui/icons'
 
 const UserListAdmin = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
+
+    const [alertMessage, setAlertMessage] = useState(null);
+
     const userList = useSelector(state => state.userList);
     const { loading, users, error} = userList;
 
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
+
+    const userDelete = useSelector(state => state.userDelete);
+    const { loading: deleteLoading, success, error: deleteError} = userDelete;
+
     useEffect(()=> {
-        dispatch(getAllUsers());
-    }, [dispatch])
+        if( userInfo && userInfo.isAdmin ){
+            dispatch(getAllUsers());
+        } else {
+            navigate('/login');
+        }
+    }, [dispatch, userInfo, navigate])
+    
+    useEffect(()=> {
+        if(userDelete){
+            if(success){
+                dispatch(getAllUsers());
+            } else if(deleteError){
+                setAlertMessage(deleteError);
+            }
+        }
+    }, [success])
+
+
+    const deleteUserHandler = (id) => {
+        if(window.confirm(`Delete ${id}?`)){
+            dispatch(deleteUser(id));
+        }
+    }
 
     if(loading){
         return (
@@ -28,6 +60,7 @@ const UserListAdmin = () => {
     return (
         <Container maxW={'container.xl'} mt={5}>
             {error && <Alert status='error'>{error}</Alert>}
+            {deleteError && <Alert status='error'>{deleteError}</Alert>}
             {users && 
                 <Table variant='simple' colorScheme='blackAlpha'>
                 <TableCaption placement='top'>USER LIST</TableCaption>
@@ -38,6 +71,7 @@ const UserListAdmin = () => {
                     <Th>ID</Th>
                     <Th>isAdmin</Th>
                     <Th>Last Updated</Th>
+                    <Th><SettingsIcon/> Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -48,6 +82,7 @@ const UserListAdmin = () => {
                             <Td>{user._id}</Td>
                             <Td>{user.isAdmin ? <CheckIcon/> : <CloseIcon/>}</Td>
                             <Td>{user.updatedAt.split('T')[0]}</Td>
+                            <Td><DeleteIcon onClick={()=>deleteUserHandler(user._id)}/></Td>
                         </Tr>
                     ))}
                 </Tbody>

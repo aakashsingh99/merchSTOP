@@ -19,7 +19,7 @@ const PlaceOrder = () => {
             navigate('/cart');
         } else if(!shippingAddress){
             navigate('/shipping');
-        } else if(!paymentMethod){
+        } else if(cart && !paymentMethod){
             navigate('/payment')
         }
     })
@@ -45,9 +45,6 @@ const PlaceOrder = () => {
             shippingPrice: shippingCharges,
             totalPrice: totalPrice
         }))
-        if(order.paymentMethod === 'paypal'){
-            navigate('pay');
-        }
     }
 
 

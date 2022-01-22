@@ -12,6 +12,10 @@ import PaymentMethod from './pages/PaymentMethod'
 import PlaceOrder from './pages/PlaceOrder'
 import OrderDetails from './pages/OrderDetails'
 import UserListAdmin from './pages/UserListAdmin'
+import ProductListAdmin from './pages/ProductListAdmin'
+import ProductCreateAdmin from './pages/ProductCreateAdmin'
+import ProductUpdateAdmin from './pages/ProductUpdateAdmin'
+import OrderListAdmin from './pages/OrderListAdmin'
 
 // TODO: https://stackoverflow.com/a/66362955
 function App() {
@@ -32,6 +36,10 @@ function App() {
             <Route path='/place-order' element={<PlaceOrder/>}/>
             <Route path='/order/:id' element={<OrderDetails/>}/>
             <Route path='/admin/users' element={<UserListAdmin/>}/>
+            <Route path='/admin/products' element={<ProductListAdmin/>}/>
+            <Route path='/admin/products/create' element={<ProductCreateAdmin/>}/>
+            <Route path='/admin/products/:id/edit' element={<ProductUpdateAdmin/>}/>
+            <Route path='/admin/orders' element={<OrderListAdmin/>}/>
           </Routes>
       </Router>
     </>
