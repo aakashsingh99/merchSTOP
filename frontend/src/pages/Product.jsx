@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchProductDetails } from "../actions/productActions";
+import { createProductReview, fetchProductDetails } from "../actions/productActions";
 
 import { StarIcon, WarningIcon } from "@chakra-ui/icons";
-import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Image, 
+import { Alert, AlertIcon, Badge, Box, Button, Container, Divider, Flex, Heading, Image, 
+        Input, 
         Select, 
-        SimpleGrid, Spinner, Stack, StackDivider, Text } from "@chakra-ui/react"
+        SimpleGrid, Spinner, Stack, StackDivider, Text, useToast } from "@chakra-ui/react"
 
 const Product = () => {
     const {id} = useParams();
@@ -16,12 +17,16 @@ const Product = () => {
 
     const [quantity, setQuantity] = useState(1);
 
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+    
     const { loading, product, error} =  useSelector(state => state.productDetails)
-
+    const { userInfo } = useSelector(state => state.userLogin);
+    
     useEffect(()=> {
         dispatch(fetchProductDetails(id));
     }, [dispatch, id])
-
+    
     const addToCartHandler = (e) => {
         navigate({
             pathname: '/cart',
@@ -30,6 +35,34 @@ const Product = () => {
                 quantity: quantity
             })}`
         });            
+    }
+
+    const toast = useToast()
+    const submitReviewHandler = () => {
+        let myReview = null;
+        if(product && userInfo){
+            myReview = product.reviews.find(r => r.user === userInfo._id)
+        }
+
+        if(myReview){
+            toast({
+                title: 'Already Reviewed',
+                status: 'error',
+                position: 'top'
+            })
+        } else if(comment === '' || rating<1){
+            toast({
+                title: 'Please Enter a valid review',
+                status: 'warning',
+                position: 'top'
+            })
+        } else {
+            const review = {rating, comment}
+            dispatch(createProductReview(id, review))
+            alert('Review Submitted');
+        }
+        setComment('')
+        setRating(0)
     }
 
     if(loading) return (
@@ -49,7 +82,7 @@ const Product = () => {
 
     return (
         <>
-            {   product && (<Container maxW='container.xl' >
+            {   product && (<Container maxW='container.xl' mb={5}>
                 <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={{ base: 8, md: 10 }} py={{ base: 6, md: 10 }}>
                     <Flex>
                         <Image src={product.image} alt="ProductImg" 
@@ -99,9 +132,8 @@ const Product = () => {
                                     value={quantity} size={'lg'}
                                     onChange={(e) => setQuantity(e.target.value)}
                                 >
-                                    {[...Array(product.countInStock).keys()].map(qty=>
-                                        (<option key={qty+1}>{qty+1}</option>)    
-                                    )}
+                                    {[...Array(product.countInStock>5 ? 5 :product.countInStock ).keys()]
+                                            .map(qty=>(<option key={qty+1}>{qty+1}</option>))}
                                 </Select>)
                         }
                         <Button onClick={addToCartHandler}
@@ -121,6 +153,54 @@ const Product = () => {
                         </Button>
                     </Stack>
                 </SimpleGrid>
+                {
+                    product.numReviews > 0 
+                    &&   <Stack maxW='md'>
+                            <Heading as='h4' size='md'>Reviews:</Heading>
+                            <Stack mt={5} divider={<Divider borderColor='darkgrey'/>}>
+                                {product.reviews.map(r=> <Box key={r._id}>
+                                    <Badge fontSize='md'>{r.name}</Badge>
+                                    <Box>
+                                        {Array(5)
+                                            .fill('')
+                                            .map((_, i) => (
+                                                <StarIcon key={i}
+                                                    color={i < r.rating ? 'teal.400' : 'gray.300'}
+                                                />
+                                            ))}
+                                    </Box>
+                                    <Text fontSize='md' color='grey'>{r.comment}</Text>
+                                </Box>
+                                )}
+                            </Stack>
+                        </Stack>
+                }
+                {
+                    userInfo && 
+                    <Stack mt={4} maxW='md' borderWidth='1px' padding={2} backgroundColor='#edf2f7'>
+                        <Heading as='h4' size='md'>Add Your Review</Heading>
+                        <Box>
+                            <span>Rating: </span>
+                            {Array(5)
+                                .fill('')
+                                .map((_, i) => (
+                                    <StarIcon
+                                        key={i} onClick={e => setRating(i+1)}
+                                        color={i < rating ? 'teal.400' : 'gray.300'}
+                                    />
+                                ))}
+                            <span> ({rating})</span>
+                        </Box>
+                        <Input variant='outline' placeholder='Your Comment' value={comment}
+                            onChange={e => setComment(e.target.value)}
+                        />
+                        <Button rounded={'md'} w={'full'} size={'lg'}
+                            py={'2'} bg={'teal'} color={'white'} 
+                            _hover={{ transform: 'translateY(2px)', boxShadow: 'lg',}} 
+                            onClick={submitReviewHandler}
+                        > Submit Review</Button>
+                    </Stack>
+                }
             </Container>)}
         </>
     )

@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from 'dotenv'
+import morgan from "morgan"
 import connectDB from './config/db.js'
 
 import { errorHandler, notFoundHandler} from './middleware/errorMiddleware.js'
@@ -12,6 +13,7 @@ import path from 'path'
 dotenv.config()
 
 const app = express()
+app.use(morgan('dev'));
 connectDB();
 
 app.use(express.json({ limit: '50mb' }));
