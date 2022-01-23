@@ -6,6 +6,7 @@ import { Box, Flex, HStack, Link, IconButton, Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import AdminNavbarItems from './AdminNavbarItems';
+import SearchBox from './SearchBox';
 
 const Navbar = () => {
   const userLogin = useSelector(state => state.userLogin);
@@ -25,11 +26,13 @@ const Navbar = () => {
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
           />
-            <Box>
-              <RouteLink to='/'>Merch<strong>STOP</strong></RouteLink>
-            </Box>
+          
+          <Box>
+            <RouteLink to='/'>Merch<strong>STOP</strong></RouteLink>
+          </Box>
           <HStack spacing={8} alignItems={'center'}>
             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                <SearchBox/>
                 {
                   userInfo && userInfo.isAdmin && <AdminNavbarItems/>
                 }
@@ -60,6 +63,7 @@ const Navbar = () => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
+                <SearchBox/>
                 <Link as={RouteLink} to='/cart' px={2} py={1} rounded={'md'} href={'#'}
                     _hover={{textDecoration: 'none', bg:'gray.300'}}
                     onClick={isOpen && onClose }

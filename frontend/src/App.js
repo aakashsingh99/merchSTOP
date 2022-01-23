@@ -16,6 +16,7 @@ import ProductListAdmin from './pages/ProductListAdmin'
 import ProductCreateAdmin from './pages/ProductCreateAdmin'
 import ProductUpdateAdmin from './pages/ProductUpdateAdmin'
 import OrderListAdmin from './pages/OrderListAdmin'
+import SearchResults from './pages/SearchResults'
 
 // TODO: https://stackoverflow.com/a/66362955
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route path='/' element={<Home/>}/>
             <Route path='/product/:id' element={<Product/>}/>
+            <Route path='/search/:searchTerm' element={<SearchResults/>}/>
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/cart/:id' element={<Cart/>}/>
             <Route path='/shipping' element={<Shipping/>}/>
