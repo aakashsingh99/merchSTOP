@@ -21,6 +21,7 @@ export const createNewOrder = (order) => async(dispatch, getState) => {
             payload: data
         })
         dispatch({type: CART_RESET})
+        localStorage.removeItem('cartItems')
     } catch (error) {
         dispatch({type: ORDER_CREATE_FAIL, 
             payload: error.response && error.response.data.message
