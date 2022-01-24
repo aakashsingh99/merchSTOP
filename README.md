@@ -2,13 +2,13 @@
 MERN Stack Ecommerce app for Merch
 
 ### frontend
-ReactJS
+ReactJS <br />
 Chakra-UI
 
 ### Backend
-NodeJS
+NodeJS <br />
 Express
 
 ### DB
-MongoDB
+MongoDB <br />
 Images served from cloudinary
