@@ -7,7 +7,10 @@ const ProductCard = ({product}) => {
     return (
         <RouteLink to={`/product/${product._id}`}>
             <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' >
-                <Image src={product.image} alt='product' />
+                <Image src={product.image} alt='product' 
+                     fit={'cover'} align={'center'} w={'100%'}
+                     h={{ base: '100%', sm: '400px', lg: '500px' }}
+                />
                 <Box p='6'>
                     <Box display='flex' alignItems='baseline' justifyContent='space-between'>
                         <Badge borderRadius='full' mr='2' colorScheme='teal'>{product.category}</Badge>

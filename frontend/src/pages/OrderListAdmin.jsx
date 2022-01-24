@@ -1,4 +1,4 @@
-import {  CheckCircleIcon, CheckIcon, DeleteIcon,  SettingsIcon } from "@chakra-ui/icons"
+import {  CheckCircleIcon, CheckIcon,  SettingsIcon } from "@chakra-ui/icons"
 import { Alert,Button, Center, Container, Link, Spinner,
         Table, TableCaption, Tbody, Td, Th, Thead, Tr,  } from "@chakra-ui/react"
 import { useEffect} from "react";
@@ -22,10 +22,6 @@ const OrderListAdmin = () => {
             navigate('/');
         }
     }, [dispatch, userInfo, navigate])
-
-    const deleteOrderHandler = (id) => {
-        console.log('deleting')
-    }
 
     const { success } = useSelector(state => state.orderDeliver);
     useEffect(()=> {
@@ -71,8 +67,6 @@ const OrderListAdmin = () => {
                             <Td>{o.totalPrice}</Td>
                             <Td>{o.isPaid ? 'Paid' : 'Not Paid'}</Td>
                             <Td>
-                                <DeleteIcon onClick={()=>deleteOrderHandler(o._id)} w={10} h={10} borderRadius={10}
-                                    _hover={{backgroundColor:'black', color: 'white'}} padding={2} mr={2}/>
                                 {!o.isDelivered ? <CheckIcon onClick={()=>markOrderDelivered(o._id)} 
                                     w={10} h={10} borderRadius={10}
                                     _hover={{backgroundColor:'black', color: 'white'}} padding={2} mr={2} 
