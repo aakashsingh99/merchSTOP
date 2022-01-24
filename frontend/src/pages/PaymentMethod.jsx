@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import {savePaymentMethod} from '../actions/cartActions'
 import { useNavigate } from "react-router-dom";
 
-import { Button, Center, Container, Divider, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react"
+import { Button, Center, Container, Divider, Heading, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react"
 
 const PaymentMethod = () => {
     const [paymentMethod, setPaymentMethod] = useState('pod');
@@ -35,9 +35,8 @@ const PaymentMethod = () => {
                                 <Stack>
                                     <Radio value='pod'>Pay On Delivery</Radio>
                                     <Divider/>
-                                    <Radio value='paypal'>Paypal</Radio>
-                                    <Divider/>
-                                    <Radio value='razorpay'>Razorpay</Radio>
+                                    <Text>Currently Online Payment Disabled</Text>
+                                    <Radio value='razorpay' isDisabled={true}>Razorpay</Radio>
                                 </Stack>
                             </RadioGroup>
                             <Center>

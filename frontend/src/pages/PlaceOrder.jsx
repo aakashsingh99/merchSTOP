@@ -14,6 +14,8 @@ const PlaceOrder = () => {
     const orderCreate = useSelector(state => state.orderCreate);
     const { order, success, error} = orderCreate
 
+    //TODO: ORDER_CREATE_RESET
+
     useEffect(()=> {
         if(cartItems.length === 0){
             navigate('/cart');
@@ -23,8 +25,6 @@ const PlaceOrder = () => {
             navigate('/payment')
         }
     })
-
-    
 
     let cartPrice = 0;
     let shippingCharges = 0;
