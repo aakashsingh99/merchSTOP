@@ -5,11 +5,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getOrderDetails} from '../actions/orderActions'
 
 import { Alert, Badge, Box, Button, Center, Container, Divider, Flex, Heading, Link, Spinner, Stack, Text} from '@chakra-ui/react'
-import { CheckCircleIcon, TimeIcon} from '@chakra-ui/icons'
+import { ChatIcon, CheckCircleIcon, TimeIcon} from '@chakra-ui/icons'
 
 const OrderDetails = () => {
     const params = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams,] = useSearchParams();
     const success = searchParams.get('s');
 
     const dispatch = useDispatch()
@@ -96,6 +96,11 @@ const OrderDetails = () => {
                             </Text>
                             <Text> Total Price: ₹{order.totalPrice}</Text>
                             <Text> Payment Method: {(order.paymentMethod).toUpperCase()}</Text>
+                        </Box>
+                        <Box>
+                            <Link as={RouteLink} to={`/order/${params.id}/support`} >
+                                <Text><ChatIcon mx={2}/>Report Issue</Text>
+                            </Link>
                         </Box>
                     </Stack>
             </Box>

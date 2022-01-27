@@ -17,6 +17,7 @@ import ProductCreateAdmin from './pages/ProductCreateAdmin'
 import ProductUpdateAdmin from './pages/ProductUpdateAdmin'
 import OrderListAdmin from './pages/OrderListAdmin'
 import SearchResults from './pages/SearchResults'
+import WebToCase from './components/WebToCase'
 
 // TODO: https://stackoverflow.com/a/66362955
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path='/payment' element={<PaymentMethod/>} />
             <Route path='/place-order' element={<PlaceOrder/>}/>
             <Route path='/order/:id' element={<OrderDetails/>}/>
+            <Route path='/order/:id/support' element={<WebToCase/>}/>
             <Route path='/admin/users' element={<UserListAdmin/>}/>
             <Route path='/admin/products' element={<ProductListAdmin/>}/>
             <Route path='/admin/products/create' element={<ProductCreateAdmin/>}/>
