@@ -12,3 +12,5 @@ Express
 ### DB
 MongoDB <br />
 Images served from cloudinary
+
+Live: https://merchstop.herokuapp.com/
